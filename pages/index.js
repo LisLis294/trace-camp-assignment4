@@ -1,7 +1,37 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import React from "react"
+import axios from "axios"
 
 export default function Home() {
+  const [calculator, setCalculator] = React.useState();
+  const [fname, setFname] = React.useState("");
+  const [sname, setSname] = React.useState("");
+
+  const onSubmit = (event) => { 
+    event.preventDefault();
+    axios.get(`/api/calc?fname=${fname}&sname=${sname}`).then((response) => setCalculator(response.data.result));
+    
+    console.log("Submitted");
+  }
+
+  return(
+    <main>
+      <form onSubmit={onSubmit}>
+        <label htmlFor="name1">Name 1: </label>
+        <input id="name1" value={fname} onChange={(event) => setFname(event.target.value) }>
+        </input>
+        <label htmlFor="name2">Name 2:</label>
+        <input id="name2" value={sname} onChange={(event) => setSname(event.target.value)}>
+        </input>
+
+        <button type="submit">Submit!</button>
+      </form>
+      <h1>{calculator}</h1>
+    </main>
+  )
+}
+/*export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
@@ -63,3 +93,4 @@ export default function Home() {
     </div>
   )
 }
+*/
